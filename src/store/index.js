@@ -58,18 +58,11 @@ const store = createStore({
       }
     },
 
-    nextPage({ commit, dispatch, state }, token) {
-      if (state.currentPage < state.totalPages) {
-        commit('setCurrentPage', state.currentPage + 1);
-        dispatch('fetchAppeals', token);
-      }
-    },
+    paginatePages({ commit, dispatch, state }, params) {
+      const { token, pageNumber } = params
 
-    prevPage({ commit, dispatch, state }, token) {
-      if (state.currentPage > 1) {
-        commit('setCurrentPage', state.currentPage - 1);
+        commit('setCurrentPage', state.currentPage = pageNumber);
         dispatch('fetchAppeals', token);
-      }
     },
   },
   getters: {

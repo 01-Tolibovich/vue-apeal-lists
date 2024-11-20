@@ -1,4 +1,4 @@
-@use './variables.scss' as *;
+@use "./variables.scss" as *;
 
 *,
 *::before,
@@ -17,6 +17,34 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: $bg-color;
+
+  .container {
+    max-width: 1250px;
+    padding: 20px;
+    margin: 16px auto;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    overflow: hidden;
+  
+    @media screen and (max-width: $xxl) {
+      max-width: 1100px;
+    }
+    @media screen and (max-width: $xl) {
+      max-width: 900px;
+    }
+    @media screen and (max-width: $lg) {
+      margin: 16px;
+    }
+    @media screen and (max-width: $md) {
+      max-width: 700px;
+      padding: 16px;
+    }
+    @media screen and (max-width: $sm) {
+      padding: 10px;
+      margin: 10px;
+    }
+  }
 
   button {
     background-color: $primary-color;
@@ -25,5 +53,34 @@ body {
     padding: 8px 16px;
     cursor: pointer;
     color: #ffffff;
-  };
+  }
+
+  //pagination styles
+  .pagination-container {
+    display: flex;
+    column-gap: 10px;
+    list-style-type: none;
+  }
+  .paginate-buttons {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: transparent;
+    color: $text-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .paginate-buttons:hover {
+    background-color: #d8d8d8;
+  }
+  .active-page {
+    background-color: $primary-color;
+    border: 1px solid $primary-color;
+    color: white;
+  }
+  .active-page:hover {
+    background-color: $primary-color;
+  }
 }

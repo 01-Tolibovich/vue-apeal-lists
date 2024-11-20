@@ -1,44 +1,50 @@
 <template>
-  <div class="appeals-page">
-    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-    <div class="create-post">
-      <CreateApeal />
+  <div>
+    <h1 class="container title">Список заявок</h1>
+    <div class="appeals-page container">
+      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      <div class="align-left">
+        <CreateApeal />
+      </div>
+      <AppealsTabble :appeals="appeals" :openModal="openModal" />
+
+      <!-- <p v-else>Нет доступных заявок</p> -->
+      <div class="align-left paginations-desktop"><vue-awesome-paginate :total-items="totalPages" :items-per-page="10"
+          :max-pages-shown="4" v-model="currentPage" @click="onClickHandler" /></div>
+      <div class="align-left paginations-mobile"><vue-awesome-paginate :total-items="totalPages" :items-per-page="10"
+          :max-pages-shown="1" v-model="currentPage" @click="onClickHandler" /></div>
+      <ModalUI :visible="isModalVisible" @close="closeModal">
+        <template #header>
+          <h2>Заявка № {{ appeal.number }}</h2>
+        </template>
+        <template #default>
+          <div>
+            <label for="building">Дом</label>
+            <input type="text" name="" id="building" v-model="appeal.premise.full_address">
+            <label for="apartment">Квартира</label>
+            <input type="text" name="" id="apartment" v-model="appeal.apartment.number">
+            <label for="due_date">Срок</label>
+            <input type="text" name="" id="due_date" v-model="appeal.due_date">
+          </div>
+        </template>
+        <template #footer>
+          <button @click="saveChanges">Сохранить</button>
+          <button @click="closeModal">Закрыть</button>
+        </template>
+      </ModalUI>
     </div>
-    <AppealsTabble :appeals="appeals" :openModal="openModal" />
-
-    <!-- <p v-else>Нет доступных заявок</p> -->
-    <Pagination :currentPage="currentPage" :totalPages="totalPages" :prevPage="prevPage" :nextPage="nextPage" />
-
-    <ModalUI :visible="isModalVisible" @close="closeModal">
-      <template #header>
-        <h2>Редактирование заявки</h2>
-      </template>
-      <template #default>
-        <p><strong>Адрес:</strong> {{ appeal.premise?.full_address }} {{ appeal.apartment?.number }}</p>
-        <p><strong>Заявитель:</strong> {{ appeal.applicant?.first_name }} {{ appeal.applicant?.last_name }}</p>
-        <textarea v-model="appeal.description" placeholder="Измените описание"></textarea>
-      </template>
-      <template #footer>
-        <button @click="saveChanges">Сохранить</button>
-        <button @click="closeModal">Закрыть</button>
-      </template>
-    </ModalUI>
   </div>
 </template>
 
 <script>
 import AppealsTabble from '@/components/AppealsTabble.vue';
-import Pagination from '@/components/Pagination.vue';
 import ModalUI from '@/components/UI/ModalUI.vue';
 import CreateApeal from '@/components/CreateApeal.vue';
 
 export default {
-  components: { AppealsTabble, Pagination, ModalUI, CreateApeal },
+  components: { AppealsTabble, ModalUI, CreateApeal },
   data() {
     return {
-      // appeals: [],
-      // count: 0,
-      // pageSize: 10,
       isModalVisible: false,
       appeal: {
         premise: '',
@@ -79,16 +85,14 @@ export default {
     }
   },
   methods: {
-    nextPage() {
+    onClickHandler(pageNumber) {
       const token = localStorage.getItem('authToken');
       if (token) {
-        this.$store.dispatch('nextPage', token);
-      }
-    },
-    prevPage() {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        this.$store.dispatch('prevPage', token);
+        const params = {
+          token,
+          pageNumber
+        }
+        this.$store.dispatch('paginatePages', params);
       }
     },
 
@@ -110,11 +114,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  background-color: transparent;
+  font-size: 20px;
+}
+
 .appeals-page {
   display: grid;
 
-  .create-post {
+  .align-left {
     justify-self: end;
+  }
+
+  @media screen and (max-width: $sm) {
+    .paginations-desktop {
+      display: none;
+    }
+    .paginations-mobile {
+      justify-self: center;
+    }
+  }
+
+  @media screen and (min-width: ($sm + 1px)) {
+    .paginations-mobile {
+      display: none;
+    }
   }
 }
 </style>

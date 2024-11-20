@@ -7,14 +7,13 @@
     <template #default>
       <!-- Дом -->
       <label for="premise">Дом</label>
-      <v-select v-model="selectedPremise" :options="premises" label="name" @search="onSearchPremises"
-        placeholder="Начните вводить название дома" @input="setPremiseId"></v-select>
+      <v-select v-model="selectedPremise" :value="selectedPremise" :options="premises" label="name" @search="onSearchPremises"
+        placeholder="Начните вводить название дома" @update:modelValue="setPremiseId"></v-select>
       <br>
 
       <!-- Квартира -->
-      <label for="premise">Дом</label>
-      <v-select v-model="selectedapartment" :options="apartments" label="name" @search="onSearchApartments"
-        placeholder="Начните вводить название дома" @input="setPremiseId"></v-select>
+      <label for="premise">Квартира</label>
+      <input type="number">
       <br>
 
       <!-- Фамилия -->
@@ -57,7 +56,7 @@ import vSelect from 'vue-select';  // Добавим компонент для �
 import apiClient from '@/apiClient';
 
 export default {
-  name: 'CreatePost',
+  name: 'CreateApeal',
   components: { ModalUI, vSelect },
 
   data() {
@@ -110,7 +109,7 @@ export default {
             }
           );
           this.premises = response.data.results.map(item => ({
-            premise_id: item.id, // UUID дома
+            value: item.id, // UUID дома
             name: item.address, // Название дома
           }));
         } catch (error) {
@@ -121,10 +120,11 @@ export default {
 
 
     async onSearchApartments(apartNum) {
+
       try {
           const token = localStorage.getItem('authToken');
           const response = await apiClient.get(
-            `/?premise_id=${this.formData.premise_id}/`,
+            `/apartments/?premise_id=${this.formData.premise_id}`,
             {
               params: { search: apartNum },
               headers: {
@@ -143,7 +143,7 @@ export default {
 
     // Метод для установки premise_id при выборе дома
     setPremiseId(selectedPremise) {
-      this.formData.premise_id = selectedPremise ? selectedPremise.premise_id : '';
+      this.formData.premise_id = selectedPremise.value;
     },
 
     // Метод для создания заявки
