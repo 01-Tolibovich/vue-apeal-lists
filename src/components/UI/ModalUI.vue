@@ -1,18 +1,17 @@
 <template>
-  <div v-if="visible" class="modal-overlay">
-    <div class="modal">
+  <div v-if="visible" class="modal-overlay" @click="closeModal">
+    <div class="modal" @click.stop>
       <header class="modal-header">
         <slot name="header">
-          <h2>Заголовок модального окна</h2>
         </slot>
-        <button class="close-button" @click.self="closeModal">×</button>
+        <!-- <button class="close-button" @click="closeModal">×</button> -->
       </header>
       <section class="modal-body">
         <slot></slot>
       </section>
-      <footer class="modal-footer">
-        <slot name="footer">
-          <button @click="closeModal">Закрыть</button>
+      <footer @click.stop class="modal-footer" >
+        <slot @click.stop name="footer" >
+          <button>Сохранить</button>
         </slot>
       </footer>
     </div>
@@ -51,22 +50,22 @@ export default {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  max-width: 738px;
+  width: 100%;
   position: relative;
 }
 .modal-header {
+  padding-bottom: 10px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
 }
 .modal-body {
   padding: 10px 0;
 }
 .modal-footer {
-  border-top: 1px solid #ccc;
   padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 .close-button {
   background: none;

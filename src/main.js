@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import moment from 'moment'
 import store from './store';
+import 'vue-select/dist/vue-select.css';
 import './assets/styles/main.scss';
 import VueAwesomePaginate from "vue-awesome-paginate";
 

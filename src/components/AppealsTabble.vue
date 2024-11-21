@@ -2,9 +2,11 @@
   <div class="apleas-wrapper">
     <div class="appeals-tabble">
       <template v-for="(appeal, index) in appeals" :key="appeal.id">
-        <div class="row">
+        <div class="row" >
           <header v-if="index === 0">№</header>
           <button @click="openModal(appeal)" class="appeal-number">{{ appeal.number }}</button>
+          {{ console.log(6666, openModal)
+           }}
         </div>
         <div class="row">
           <header v-if="index === 0">Создана</header>

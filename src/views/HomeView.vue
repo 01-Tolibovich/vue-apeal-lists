@@ -15,21 +15,52 @@
           :max-pages-shown="1" v-model="currentPage" @click="onClickHandler" /></div>
       <ModalUI :visible="isModalVisible" @close="closeModal">
         <template #header>
-          <h2>Заявка № {{ appeal.number }}</h2>
+            <span>Заявка № {{ appeal.number }}</span>
+            <span class="status">{{ appeal.status.name }}</span>
         </template>
         <template #default>
-          <div>
-            <label for="building">Дом</label>
-            <input type="text" name="" id="building" v-model="appeal.premise.full_address">
-            <label for="apartment">Квартира</label>
-            <input type="text" name="" id="apartment" v-model="appeal.apartment.number">
-            <label for="due_date">Срок</label>
-            <input type="text" name="" id="due_date" v-model="appeal.due_date">
+          <div class="apeale-form">
+            <section class="first-section">
+              <div>
+                <label for="building">Дом</label>
+                <input type="text" name="" id="building" v-model="apealAdress">
+              </div>
+              <div>
+                <label for="apartment">Квартира</label>
+                <input type="number" name="" id="apartment" v-model="apartmentNumber">
+              </div>
+              <div>
+                <label for="due_date">Срок</label>
+                <input type="datetime-local" name="" id="due_date" v-model="appeal.due_date">
+              </div>
+            </section>
+            <section class="second-section">
+              <div>
+                <label for="last_name">Фамилия</label>
+                <input type="text" id="last_name" v-model="appeal.applicant.last_name">
+              </div>
+              <div>
+                <label for="first_name">Имя</label>
+                <input type="text" id="first_name" v-model="appeal.applicant.first_name">
+              </div>
+              <div>
+                <label for="patronymic_name">Отчество</label>
+                <input type="text" id="patronymic_name" v-model="appeal.applicant.patronymic_name">
+              </div>
+              <div>
+                <label for="phone">Телефон</label>
+                <input type="number" id="phone">
+              </div>
+              <div class="text-area">
+                <label for="description">Описание</label>
+                <textarea name="" id="description" v-model="appeal.description"></textarea>
+              </div>
+            </section>
           </div>
         </template>
         <template #footer>
-          <button @click="saveChanges">Сохранить</button>
-          <button @click="closeModal">Закрыть</button>
+          <div></div>
+          <button class="align-left" @click="saveChanges">Сохранить</button>
         </template>
       </ModalUI>
     </div>
@@ -46,12 +77,10 @@ export default {
   data() {
     return {
       isModalVisible: false,
-      appeal: {
-        premise: '',
-        apartment: '',
-        applicant: '',
-        description: '',
-      },
+      appeal: '',
+      applicant: '',
+      description: '',
+      apartment: '',
     };
   },
 
@@ -72,6 +101,26 @@ export default {
     // Общее количество страниц
     totalPages() {
       return this.$store.getters.totalPages;
+    },
+    apartmentNumber: {
+      get() {
+        return this.appeal.apartment?.number || '';
+      },
+      set(value) {
+        if (this.appeal.apartment) {
+          this.appeal.apartment.number = value;
+        }
+      },
+    },
+    apealAdress: {
+      get() {
+        return this.appeal.apartment?.address || '';
+      },
+      set(value) {
+        if (this.appeal.apartment) {
+          this.appeal.apartment.number = value;
+        }
+      },
     },
   },
 
@@ -130,6 +179,7 @@ export default {
     .paginations-desktop {
       display: none;
     }
+
     .paginations-mobile {
       justify-self: center;
     }

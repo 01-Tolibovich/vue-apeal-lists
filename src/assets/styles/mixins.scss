@@ -1,6 +1,12 @@
+@use "./variables.scss" as *;
 
-
-@mixin container {
-  max-width: 1250px;
-  padding: 20px;
+@mixin enter-fields {
+  border-width: 0;
+  border-bottom-width: 1px;
+  width: 100%;
+  color: $text-color;
+  border-color: #b3b3b3 !important;
+  outline: none;
+  font-size: 16px;
+  line-height: inherit;
 }

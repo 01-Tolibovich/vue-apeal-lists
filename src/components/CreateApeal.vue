@@ -2,49 +2,54 @@
   <button @click="openModal">СОЗДАТЬ</button>
   <ModalUI :visible="isModalVisible" @close="closeModal">
     <template #header>
-      <h2>Новая заявка</h2>
+      <span>Новая заявка</span>
+      <span>Новая</span>
     </template>
     <template #default>
-      <!-- Дом -->
-      <label for="premise">Дом</label>
-      <v-select v-model="selectedPremise" :value="selectedPremise" :options="premises" label="name" @search="onSearchPremises"
-        placeholder="Начните вводить название дома" @update:modelValue="setPremiseId"></v-select>
-      <br>
-
-      <!-- Квартира -->
-      <label for="premise">Квартира</label>
-      <input type="number">
-      <br>
-
-      <!-- Фамилия -->
-      <label for="last-name">Фамилия</label>
-      <input type="text" id="last-name" v-model="formData.applicant.last_name" />
-      <br>
-
-      <!-- Имя -->
-      <label for="first-name">Имя</label>
-      <input type="text" id="first-name" v-model="formData.applicant.first_name" />
-      <br>
-
-      <!-- Отчество -->
-      <label for="patronymic-name">Отчество</label>
-      <input type="text" id="patronymic-name" v-model="formData.applicant.patronymic_name" />
-      <br>
-
-      <!-- Телефон -->
-      <label for="username">Телефон</label>
-      <input type="text" id="username" v-model="formData.applicant.username" />
-      <br>
-
-      <!-- Описание -->
-      <textarea placeholder="Добавьте описание" v-model="formData.description"></textarea>
-
-      <!-- Срок -->
-      <input type="datetime-local" v-model="formData.due_date" />
+      <div class="apeale-form">
+        <section class="first-section">
+          <div>
+            <label for="premise">Дом</label>
+            <v-select v-model="selectedPremise" :value="selectedPremise" :options="premises" label="name"
+              @search="onSearchPremises" placeholder="Начните вводить название дома" @update:modelValue="setPremiseId">
+            </v-select>
+          </div>
+          <div>
+            <label for="premise">Квартира</label>
+            <input type="number">
+          </div>
+          <div>
+            <label for="patronymic-name">Срок</label>
+            <input type="datetime-local" v-model="formData.due_date" />
+          </div>
+        </section>
+        <section class="second-section">
+          <div>
+            <label for="last-name">Фамилия</label>
+            <input type="text" id="last-name" v-model="formData.applicant.last_name" />
+          </div>
+          <div>
+            <label for="first-name">Имя</label>
+            <input type="text" id="first-name" v-model="formData.applicant.first_name" />
+          </div>
+          <div>
+            <label for="patronymic-name">Отчество</label>
+            <input type="text" id="patronymic-name" v-model="formData.applicant.patronymic_name" />
+          </div>
+          <div>
+            <label for="username">Телефон</label>
+            <input type="text" id="username" v-model="formData.applicant.username" />
+          </div>
+          <div class="text-area">
+            <label for="username">Описание</label>
+            <textarea placeholder="Добавьте описание" v-model="formData.description"></textarea>
+          </div>
+        </section>
+      </div>
     </template>
     <template #footer>
+      <div></div>
       <button @click="createNewApplay">Создать заявку</button>
-      <button @click="closeModal">Закрыть</button>
     </template>
   </ModalUI>
 </template>
@@ -122,23 +127,23 @@ export default {
     async onSearchApartments(apartNum) {
 
       try {
-          const token = localStorage.getItem('authToken');
-          const response = await apiClient.get(
-            `/apartments/?premise_id=${this.formData.premise_id}`,
-            {
-              params: { search: apartNum },
-              headers: {
-                Authorization: `Token ${token}`,
-              },
-            }
-          );
-          this.premises = response.data.results.map(item => ({
-            premise_id: item.id, // UUID дома
-            name: item.address, // Название дома
-          }));
-        } catch (error) {
-          console.error("Ошибка при поиске домов:", error);
-        }
+        const token = localStorage.getItem('authToken');
+        const response = await apiClient.get(
+          `/apartments/?premise_id=${this.formData.premise_id}`,
+          {
+            params: { search: apartNum },
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        );
+        this.premises = response.data.results.map(item => ({
+          premise_id: item.id, // UUID дома
+          name: item.address, // Название дома
+        }));
+      } catch (error) {
+        console.error("Ошибка при поиске домов:", error);
+      }
     },
 
     // Метод для установки premise_id при выборе дома
@@ -156,5 +161,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
