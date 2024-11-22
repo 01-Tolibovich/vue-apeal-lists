@@ -55,7 +55,6 @@ $row-margin: 15px;
   .appeals-tabble {
     display: grid;
     grid-template-columns: min-content repeat(6, auto);
-    // column-gap: 16px;
     min-width: 1060px;
 
 

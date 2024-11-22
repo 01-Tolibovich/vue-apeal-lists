@@ -9,7 +9,6 @@
         <section class="first-section">
           <div>
             <label for="building">Дом</label>
-            <!-- <input type="text" id="building" v-model="localForm.premise.address" /> -->
             <v-select v-model="localForm.premise.address" :value="selectedPremise" :options="premises" label="name"
               @search="onSearchPremises" placeholder="Начните вводить название дома" @update:modelValue="setPremiseId">
             </v-select>
@@ -182,13 +181,6 @@ export default {
     setPremiseId(selectedPremise) {
       this.localForm.premise_id = selectedPremise.value;
     },
-
-    // Метод для создания заявки
-    // async createNewApplay() {
-    //   const token = localStorage.getItem('authToken');
-    //   await this.createAppeal({ appealData: this.formData, token });
-    //   this.closeModal();
-    // },
   },
 };
 </script>
