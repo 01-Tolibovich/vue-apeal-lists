@@ -2,11 +2,11 @@
   <div class="apleas-wrapper">
     <div class="appeals-tabble">
       <template v-for="(appeal, index) in appeals" :key="appeal.id">
-        <div class="row" >
+        <div class="row">
           <header v-if="index === 0">№</header>
           <button @click="openModal(appeal)" class="appeal-number">{{ appeal.number }}</button>
           {{ console.log(6666, openModal)
-           }}
+          }}
         </div>
         <div class="row">
           <header v-if="index === 0">Создана</header>
@@ -14,7 +14,7 @@
         </div>
         <div class="row">
           <header v-if="index === 0">Адрес</header>
-          <span>{{ appeal.premise?.full_address }} {{ appeal.apartment?.label }}</span>
+          <span>{{ appeal.premise?.address }} {{ appeal.apartment?.label }}</span>
         </div>
         <div class="row">
           <header v-if="index === 0">Заявитель</header>
@@ -55,12 +55,16 @@ $row-margin: 15px;
   .appeals-tabble {
     display: grid;
     grid-template-columns: min-content repeat(6, auto);
-    column-gap: 16px;
+    // column-gap: 16px;
     min-width: 1060px;
 
 
     .row {
-      margin: $row-margin 0;
+      padding: $row-margin 16px;
+      border-bottom: 1px solid $borderline;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
       header {
         margin-bottom: $row-margin;
@@ -74,10 +78,13 @@ $row-margin: 15px;
     }
 
     .description {
-      text-overflow: ellipsis;
-      max-width: 300px;
-      text-wrap: nowrap;
-      overflow: hidden;
+
+      span {
+        text-overflow: ellipsis;
+        max-width: 300px;
+        text-wrap: nowrap;
+        overflow: hidden;
+      }
     }
   }
 }

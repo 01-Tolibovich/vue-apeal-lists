@@ -1,6 +1,6 @@
 <template>
   <button @click="openModal">СОЗДАТЬ</button>
-  <ModalUI :visible="isModalVisible" @close="closeModal">
+  <!-- <ModalUI :visible="isModalVisible" @close="closeModal">
     <template #header>
       <span>Новая заявка</span>
       <span>Новая</span>
@@ -51,40 +51,42 @@
       <div></div>
       <button @click="createNewApplay">Создать заявку</button>
     </template>
-  </ModalUI>
+  </ModalUI> -->
+  <AppealsForm :visible="isModalVisible" @close="closeModal" @save="createNewApplay" />
 </template>
 
 <script>
-import ModalUI from './UI/ModalUI.vue';
+// import ModalUI from './UI/ModalUI.vue';
 import { mapActions } from 'vuex';
-import vSelect from 'vue-select';  // Добавим компонент для автозаполнения
-import apiClient from '@/apiClient';
+// import vSelect from 'vue-select';  // Добавим компонент для автозаполнения
+// import apiClient from '@/apiClient';
+import AppealsForm from './AppealsForm.vue';
 
 export default {
   name: 'CreateApeal',
-  components: { ModalUI, vSelect },
+  components: { AppealsForm },
 
   data() {
     return {
       isModalVisible: false,
-      formData: {
-        premise_id: '',
-        apartment_id: '',
-        applicant: {
-          first_name: '',
-          last_name: '',
-          patronymic_name: '',
-          username: '',
-        },
-        description: '',
-        due_date: '',
-        status_id: 1,
-      },
-      searchQuery: '',
-      premises: [],
-      apartments: [],
-      selectedPremise: null, // Хранение выбранного дома
-      selectedapartment: null
+      // formData: {
+      //   premise_id: '',
+      //   apartment_id: '',
+      //   applicant: {
+      //     first_name: '',
+      //     last_name: '',
+      //     patronymic_name: '',
+      //     username: '',
+      //   },
+      //   description: '',
+      //   due_date: '',
+      //   status_id: 1,
+      // },
+      // searchQuery: '',
+      // premises: [],
+      // apartments: [],
+      // selectedPremise: null, // Хранение выбранного дома
+      // selectedapartment: null
     };
   },
 
@@ -99,62 +101,67 @@ export default {
       this.isModalVisible = false;
     },
 
+    handleSave(formData) {
+      console.log(10101010, formData);
+
+    },
+
     // Метод для поиска домов
-    async onSearchPremises(query) {
-      if (query.length >= 3) {
-        try {
-          const token = localStorage.getItem('authToken');
-          const response = await apiClient.get(
-            '/geo/v2.0/user-premises/',
-            {
-              params: { search: query },
-              headers: {
-                Authorization: `Token ${token}`,
-              },
-            }
-          );
-          this.premises = response.data.results.map(item => ({
-            value: item.id, // UUID дома
-            name: item.address, // Название дома
-          }));
-        } catch (error) {
-          console.error("Ошибка при поиске домов:", error);
-        }
-      }
-    },
+    // async onSearchPremises(query) {
+    //   if (query.length >= 3) {
+    //     try {
+    //       const token = localStorage.getItem('authToken');
+    //       const response = await apiClient.get(
+    //         '/geo/v2.0/user-premises/',
+    //         {
+    //           params: { search: query },
+    //           headers: {
+    //             Authorization: `Token ${token}`,
+    //           },
+    //         }
+    //       );
+    //       this.premises = response.data.results.map(item => ({
+    //         value: item.id, // UUID дома
+    //         name: item.address, // Название дома
+    //       }));
+    //     } catch (error) {
+    //       console.error("Ошибка при поиске домов:", error);
+    //     }
+    //   }
+    // },
 
 
-    async onSearchApartments(apartNum) {
+    // async onSearchApartments(apartNum) {
 
-      try {
-        const token = localStorage.getItem('authToken');
-        const response = await apiClient.get(
-          `/apartments/?premise_id=${this.formData.premise_id}`,
-          {
-            params: { search: apartNum },
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-          }
-        );
-        this.premises = response.data.results.map(item => ({
-          premise_id: item.id, // UUID дома
-          name: item.address, // Название дома
-        }));
-      } catch (error) {
-        console.error("Ошибка при поиске домов:", error);
-      }
-    },
+    //   try {
+    //     const token = localStorage.getItem('authToken');
+    //     const response = await apiClient.get(
+    //       `/apartments/?premise_id=${this.formData.premise_id}`,
+    //       {
+    //         params: { search: apartNum },
+    //         headers: {
+    //           Authorization: `Token ${token}`,
+    //         },
+    //       }
+    //     );
+    //     this.premises = response.data.results.map(item => ({
+    //       premise_id: item.id, // UUID дома
+    //       name: item.address, // Название дома
+    //     }));
+    //   } catch (error) {
+    //     console.error("Ошибка при поиске домов:", error);
+    //   }
+    // },
 
-    // Метод для установки premise_id при выборе дома
-    setPremiseId(selectedPremise) {
-      this.formData.premise_id = selectedPremise.value;
-    },
+    // // Метод для установки premise_id при выборе дома
+    // setPremiseId(selectedPremise) {
+    //   this.formData.premise_id = selectedPremise.value;
+    // },
 
     // Метод для создания заявки
-    async createNewApplay() {
+    async createNewApplay(formData) {
       const token = localStorage.getItem('authToken');
-      await this.createAppeal({ appealData: this.formData, token });
+      await this.createAppeal({ appealData: formData, token });
       this.closeModal();
     },
   },

@@ -2,12 +2,14 @@
 import { createStore } from 'vuex';
 import apiClient from '../apiClient';
 import auth from './modules/auth';
-import appeals from './modules/appeals'
+import appeals from './modules/appeals';
+import editeAppeal from './modules/editeAppeal';
 
 const store = createStore({
   modules: {
     auth,
     appeals,
+    editeAppeal,
   },
   state() {
     return {

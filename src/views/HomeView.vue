@@ -13,16 +13,17 @@
           :max-pages-shown="4" v-model="currentPage" @click="onClickHandler" /></div>
       <div class="align-left paginations-mobile"><vue-awesome-paginate :total-items="totalPages" :items-per-page="10"
           :max-pages-shown="1" v-model="currentPage" @click="onClickHandler" /></div>
-      <ModalUI :visible="isModalVisible" @close="closeModal">
+      <AppealsForm :visible="isModalVisible" :form="appeal" @close="closeModal" @save="editeAppeal" />
+      <!-- <ModalUI :visible="isModalVisible" @close="closeModal">
         <template #header>
             <span>Заявка № {{ appeal.number }}</span>
             <span class="status">{{ appeal.status.name }}</span>
         </template>
-        <template #default>
+<template #default>
           <div class="apeale-form">
             <section class="first-section">
               <div>
-                <label for="building">Дом</label>
+                <label for="building">Дом</label>`
                 <input type="text" name="" id="building" v-model="apealAdress">
               </div>
               <div>
@@ -58,22 +59,24 @@
             </section>
           </div>
         </template>
-        <template #footer>
+<template #footer>
           <div></div>
           <button class="align-left" @click="saveChanges">Сохранить</button>
         </template>
-      </ModalUI>
+</ModalUI> -->
     </div>
   </div>
 </template>
 
 <script>
 import AppealsTabble from '@/components/AppealsTabble.vue';
-import ModalUI from '@/components/UI/ModalUI.vue';
+// import ModalUI from '@/components/UI/ModalUI.vue';
 import CreateApeal from '@/components/CreateApeal.vue';
+import AppealsForm from '@/components/AppealsForm.vue';
+import { mapActions } from 'vuex';
 
 export default {
-  components: { AppealsTabble, ModalUI, CreateApeal },
+  components: { AppealsTabble, CreateApeal, AppealsForm },
   data() {
     return {
       isModalVisible: false,
@@ -134,6 +137,8 @@ export default {
     }
   },
   methods: {
+    ...mapActions('editeAppeal', ['editeSelectedAppeal']),
+
     onClickHandler(pageNumber) {
       const token = localStorage.getItem('authToken');
       if (token) {
@@ -146,9 +151,18 @@ export default {
     },
 
     openModal(item) {
-      this.appeal = item;
+      this.appeal = item || {
+        number: "",
+        status: { name: "" },
+        due_date: "",
+        applicant: {
+          last_name: "",
+          first_name: "",
+          patronymic_name: "",
+        },
+        description: "",
+      };
       this.isModalVisible = true;
-
     },
 
     closeModal() {
@@ -156,6 +170,13 @@ export default {
     },
 
     saveChanges() {
+      this.closeModal();
+    },
+
+    async editeAppeal(formData) {
+      const token = localStorage.getItem('authToken');
+
+      await this.editeSelectedAppeal({ appealData: formData, token });
       this.closeModal();
     },
   },
