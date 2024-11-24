@@ -39,6 +39,8 @@ export default {
       const token = localStorage.getItem('authToken');
       await this.createAppeal({ appealData: formData, token });
       this.closeModal();
+
+      await this.$store.dispatch('fetchAppeals', token);
     },
   },
 };

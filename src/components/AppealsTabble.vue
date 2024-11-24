@@ -1,34 +1,33 @@
 <template>
-  <div class="apleas-wrapper">
-    <div class="appeals-tabble">
+  <div className="apleas-wrapper">
+    <div className="appeals-tabble">
       <template v-for="(appeal, index) in appeals" :key="appeal.id">
-        <div class="row">
+        <div className="row">
           <header v-if="index === 0">№</header>
-          <button @click="openModal(appeal)" class="appeal-number">{{ appeal.number }}</button>
-          {{ console.log(6666, openModal)
-          }}
+          <button @click="openModal(appeal)" className="appeal-number">{{ appeal.number }}</button>
         </div>
-        <div class="row">
+        <div className="row">
           <header v-if="index === 0">Создана</header>
           <span>{{ $moment(appeal.created_at).format('DD.MM.YYYY') }}</span>
         </div>
-        <div class="row">
+        <div className="row">
           <header v-if="index === 0">Адрес</header>
           <span>{{ appeal.premise?.address }} {{ appeal.apartment?.label }}</span>
         </div>
-        <div class="row">
+        <div className="row">
           <header v-if="index === 0">Заявитель</header>
-          <span>{{ appeal.applicant.last_name }}</span>
+          <span>{{ appeal.applicant.last_name }} {{ appeal.applicant.first_name.charAt(0).toUpperCase() }}. {{
+            appeal.applicant.patronymic_name.charAt(0).toUpperCase() }}.</span>
         </div>
-        <div class="row description">
+        <div className="row description">
           <header v-if="index === 0">Описание</header>
           <span>{{ appeal.description }}</span>
         </div>
-        <div class="row">
+        <div className="row">
           <header v-if="index === 0">Срок</header>
           <span>{{ appeal.due_date && $moment(appeal.due_date).format('DD.MM.YYYY HH:mm') }}</span>
         </div>
-        <div class="row">
+        <div className="row">
           <header v-if="index === 0">Статус</header>
           <span>{{ appeal.status.name }}</span>
         </div>
@@ -80,7 +79,7 @@ $row-margin: 15px;
 
       span {
         text-overflow: ellipsis;
-        max-width: 300px;
+        max-width: 240px;
         text-wrap: nowrap;
         overflow: hidden;
       }

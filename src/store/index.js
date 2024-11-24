@@ -4,15 +4,18 @@ import apiClient from '../apiClient';
 import auth from './modules/auth';
 import appeals from './modules/appeals';
 import editeAppeal from './modules/editeAppeal';
+import loading from './modules/loading';
 
 const store = createStore({
   modules: {
     auth,
     appeals,
     editeAppeal,
+    loading,
   },
   state() {
     return {
+      // isDataLoading: false,
       appeals: [],         // Список заявок
       currentPage: 1,      // Текущая страница
       totalPages: 1,       // Всего страниц
@@ -22,6 +25,12 @@ const store = createStore({
     };
   },
   mutations: {
+    setIsDataLoading(state, isDataLoading) {
+      state.isDataLoading = isDataLoading;
+    },
+    setPageSize(state, pageSize) {
+      state.pageSize = pageSize;
+    },
     setAppeals(state, data) {
       state.appeals = data.results;
       state.totalPages = data.pages;
@@ -35,8 +44,19 @@ const store = createStore({
     },
   },
   actions: {
-    async fetchAppeals({ commit, state }, token) {
+    updatePageSize({ commit, dispatch }, params) {
+      const { pageSize, token } = params;
+
+      commit('setPageSize', pageSize); // Устанавливаем новый размер страницы
+      commit('setCurrentPage', 1);    // Сбрасываем текущую страницу на первую
+      dispatch('fetchAppeals', token); // Перезапрашиваем данные с новыми параметрами
+    },
+
+    async fetchAppeals({ commit, dispatch, state }, token) {
+
+      // commit("setIsDataLoading", true); // Включить спиннер
       try {
+        dispatch('loading/startLoading', null, { root: true });
         const response = await apiClient.get('/appeals/v1.0/appeals/', {
           headers: {
             Authorization: `Token ${token}`,
@@ -57,14 +77,17 @@ const store = createStore({
           console.error('Ошибка при загрузке заявок:', error);
           commit('setErrorMessage', 'Не удалось загрузить список заявок. Попробуйте позже.');
         }
+      } finally {
+        // commit("setIsDataLoading", false); // Выключить спиннер
+        dispatch('loading/stopLoading', null, { root: true });
       }
     },
 
     paginatePages({ commit, dispatch, state }, params) {
       const { token, pageNumber } = params
 
-        commit('setCurrentPage', state.currentPage = pageNumber);
-        dispatch('fetchAppeals', token);
+      commit('setCurrentPage', state.currentPage = pageNumber);
+      dispatch('fetchAppeals', token);
     },
   },
   getters: {
@@ -80,6 +103,9 @@ const store = createStore({
     totalPages(state) {
       return state.totalPages;
     },
+    count(state) {
+      return state.count;
+    }
   },
 });
 

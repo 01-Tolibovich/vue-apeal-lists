@@ -64,7 +64,7 @@ body {
     margin: 40px 0 8px 0;
   }
 
-  input, textarea, .vs__search {
+  input, textarea, select, .vs__search {
     @include enter-fields();
   }
 
@@ -81,31 +81,6 @@ body {
   .vs__selected {
     position: absolute;
     bottom: 0;
-  }
-
-  .apeale-form {
-
-    @mixin section-layouts($col) {
-      display: grid;
-      column-gap: 20px;
-      grid-template-columns: repeat($col, 1fr);
-    }
-
-    .first-section {
-      @include section-layouts(3);
-    }
-
-    .second-section {
-      @include section-layouts(4);
-
-      .text-area {
-        grid-column: 1/5;
-      }
-    }
-
-    .status {
-      justify-self: end;
-    }
   }
 
   //pagination styles
