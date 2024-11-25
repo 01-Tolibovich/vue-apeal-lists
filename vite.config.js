@@ -22,4 +22,5 @@ export default defineConfig({
       },
     },
   },
+  base: "/vue-apeal-lists/"
 })
