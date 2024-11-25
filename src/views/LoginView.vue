@@ -4,6 +4,7 @@ import LoginForm from '@/components/LoginForm.vue';
 
 <template>
   <main class="login-page">
+    <div class="overlay"></div>
     <LoginForm />
   </main>
 </template>
@@ -19,5 +20,13 @@ import LoginForm from '@/components/LoginForm.vue';
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
