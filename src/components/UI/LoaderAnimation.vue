@@ -3,7 +3,6 @@
 </template>
 
 <script>
-// import { mapState } from "vuex";
 import { mapGetters, mapState } from 'vuex';
 
 export default {
@@ -22,6 +21,7 @@ export default {
   position: fixed;
   background-color: #00000096;
   display: block;
+  z-index: 100;
 }
 .loader::before , .loader::after{
   content: '';

@@ -1,7 +1,10 @@
 <template>
   <div>
     <LoaderAnimation/>
-    <h1 class="container title">Список заявок</h1>
+    <div class="container head-info">
+      <h1 class="title">Список заявок</h1>
+      <button @click="handleLogout" class="logout">Выход</button>
+    </div>
     <div class="appeals-page container">
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       <div class="align-left">
@@ -17,8 +20,6 @@
             <option value="20">20</option>
             <option value="50">50</option>
           </select>
-          {{ console.log(9999 )
-            }}
         </div>
         <div class="align-left paginations-desktop">
           <vue-awesome-paginate :total-items="count" :items-per-page="parseInt(pageSize)" :max-pages-shown="4"
@@ -40,6 +41,7 @@ import CreateApeal from '@/components/CreateApeal.vue';
 import AppealsForm from '@/components/AppealsForm.vue';
 import LoaderAnimation from '@/components/UI/LoaderAnimation.vue';
 import { mapActions, mapGetters } from 'vuex';
+import router from '@/router';
 
 export default {
   components: { AppealsTabble, CreateApeal, AppealsForm, LoaderAnimation },
@@ -176,13 +178,28 @@ export default {
 
       await this.$store.dispatch('fetchAppeals', token);
     },
+
+    handleLogout() {
+      localStorage.removeItem("authToken");
+      router.push('/login');
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.title {
+.head-info {
+  display: flex;
   background-color: transparent;
+  justify-content: space-between;
+
+  .logout {
+    background-color: transparent;
+    border: 1px solid #cd4141;
+    color: #cd4141;
+  }
+}
+.title {
   font-size: 20px;
 }
 
@@ -198,6 +215,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-top: 32px;
+
+    @media screen and (max-width: $md) {
+      flex-direction: column;
+      gap: 32px;
+    }
 
     select {
       width: 84px;

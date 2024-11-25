@@ -1,8 +1,12 @@
 import apiClient from '@/apiClient';
+import loading from './loading';
 
 const editeAppeal = {
   namespaced: true,
 
+  modules: {
+    loading,
+  },
   state: {
     appeals: [],         // Список заявок
     errorMessage: '',    // Сообщение об ошибке
@@ -37,6 +41,7 @@ const editeAppeal = {
       }
 
       try {
+        dispatch('loading/startLoading', null, { root: true });
         await apiClient.patch(`/appeals/v1.0/appeals/${params.id}/`, params, {
           headers: { Authorization: `Token ${token}` },
         });
@@ -44,6 +49,8 @@ const editeAppeal = {
         await dispatch('fetchAppeals', token);
       } catch (error) {
         console.error('Ошибка создания заявки:', error);
+      } finally {
+        dispatch('loading/stopLoading', null, { root: true });
       }
     },
   },

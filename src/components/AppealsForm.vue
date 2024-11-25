@@ -196,13 +196,33 @@ export default {
 
   .first-section {
     @include section-layouts(3);
+
+    @media screen and (max-width: $sm) {
+      @include section-layouts(1);
+    }
   }
 
   .second-section {
     @include section-layouts(4);
 
+    @media screen and (max-width: $md) {
+      @include section-layouts(2);
+    }
+
+    @media screen and (max-width: $sm) {
+      @include section-layouts(1);
+    }
+
     .text-area {
       grid-column: 1/5;
+
+      @media screen and (max-width: $md) {
+        grid-column: 1/3;
+      }
+
+      @media screen and (max-width: $sm) {
+        grid-column: 1/2;
+    }
     }
   }
 

@@ -4,15 +4,19 @@
     <form @submit.prevent="handleSubmit" class="form">
       <div class="form-group">
         <label class="login" for="text">Логин или Телефон</label>
-        <input type="text" id="text" v-model="formData.username" @blur="validateLogin"
-          :class="{ 'error': errors.username }" />
+        <div class="input-field">
+          <IconLock class="icon" /><input type="text" id="text" v-model="formData.username" @blur="validateLogin"
+            :class="{ 'error': errors.username }" />
+        </div>
         <span v-if="errors.username" class="error-message">{{ errors.username }}</span>
       </div>
       <div class="form-group">
         <label for="password">Пароль:</label>
         <div class="password-input">
-          <input :type="showPassword ? 'text' : 'password'" id="password" v-model="formData.password"
-            @blur="validatePassword" :class="{ 'error': errors.password }" />
+          <div class="input-field">
+            <IconPhone class="icon" /><input :type="showPassword ? 'text' : 'password'" id="password"
+              v-model="formData.password" @blur="validatePassword" :class="{ 'error': errors.password }" />
+          </div>
           <button type="button" @click="togglePassword" class="toggle-password">
             {{ showPassword ? 'Скрыть' : 'Показать' }}
           </button>
@@ -31,9 +35,12 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import IconLock from './icons/IconLock.vue';
+import IconPhone from './icons/IconPhone.vue';
 
 export default {
   name: 'LoginForm',
+  components: { IconLock, IconPhone },
 
   data() {
     return {
@@ -118,22 +125,12 @@ $error-color: #ff4444;
 $border-color: #ddd;
 $text-gray: #666;
 
-$border-radius: 4px;
 $input-padding: 8px;
 
 @mixin input-base {
-  width: 100%;
   padding: $input-padding;
-  border: none;
-  border-bottom: 1px solid $border-color;
-  border-radius: $border-radius;
 }
 
-@mixin rounded {
-  border-radius: 5px;
-}
-
-// Styles
 .login-form {
   background-color: #ffffff;
   display: flex;
@@ -145,7 +142,7 @@ $input-padding: 8px;
   width: 100%;
   position: relative;
   height: 290px;
-  @include rounded;
+  margin: 0 10px;
 
   .title {
     position: absolute;
@@ -159,7 +156,6 @@ $input-padding: 8px;
     font-size: 16px;
     font-weight: 600;
     color: #ffffff;
-    @include rounded;
   }
 
   form {
@@ -181,12 +177,18 @@ $input-padding: 8px;
   }
 
   input {
-
+    border: none;
     &[type="email"],
     &[type="password"],
     &[type="text"] {
       @include input-base;
     }
+  }
+
+  .input-field {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
   }
 }
 

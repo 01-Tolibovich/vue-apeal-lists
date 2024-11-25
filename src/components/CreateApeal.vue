@@ -29,11 +29,6 @@ export default {
       this.isModalVisible = false;
     },
 
-    handleSave(formData) {
-      console.log(10101010, formData);
-
-    },
-
     // Метод для создания заявки
     async createNewApplay(formData) {
       const token = localStorage.getItem('authToken');

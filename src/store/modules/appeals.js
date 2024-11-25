@@ -1,7 +1,13 @@
 import apiClient from '@/apiClient';
+import loading from './loading';
+
 
 const appeals = {
   namespaced: true,
+
+  modules: {
+    loading,
+  },
 
   state: {
     appeals: [],         // Список заявок
@@ -31,6 +37,7 @@ const appeals = {
     },
 
     async createAppeal({ dispatch }, { appealData, token }) {
+      dispatch('loading/startLoading', null, { root: true });
       try {
         await apiClient.post('/appeals/v1.0/appeals/', appealData, {
           headers: { Authorization: `Token ${token}` },
@@ -39,6 +46,8 @@ const appeals = {
         await dispatch('fetchAppeals', token);
       } catch (error) {
         console.error('Ошибка создания заявки:', error);
+      } finally {
+        dispatch('loading/stopLoading', null, { root: true });
       }
     },
   },

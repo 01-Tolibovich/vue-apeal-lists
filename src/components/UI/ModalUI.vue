@@ -47,12 +47,13 @@ export default {
   align-items: center;
 }
 .modal {
-  background: white;
+  background: #ffffff;
   padding: 20px;
   border-radius: 8px;
   max-width: 738px;
   width: 100%;
   position: relative;
+  margin: 0 10px;
 }
 .modal-header {
   padding-bottom: 10px;
